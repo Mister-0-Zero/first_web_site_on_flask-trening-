@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+ 
+{% block content %}
+{{ super() }}
+{% for cat, msg in get_flashed_messages(True) %}
+<div class="flash {{cat}}">{{msg}}</div>
+{% endfor %}
+<form action="" method="post" class="form-contact">
+{{ form.hidden_tag() }}  <!-- защита от SCRF атак -->
+
+
+<!-- {{ form.email.label() }} 
+{% if form.email.errors %}
+         {{ form.email(class="invalid") }}
+<span class="invalid-feedback">
+         {% for e in form.email.errors %}
+         {{ e }}
+         {% endfor %}
+</span>
+{% else %}
+         {{ form.email() }}
+{% endif %}
+ 
+{{ form.psw.label() }}
+{% if form.psw.errors %}
+         {{ form.psw(class="invalid") }}
+<span class="invalid-feedback">
+         {% for e in form.psw.errors %}
+         {{ e }}
+         {% endfor %}
+</span>
+{% else %}
+         {{ form.psw() }}
+{% endif %} -->
+
+
+<!-- экономия места -->
+{% for field in form if field.name not in ['csrf_token', 'remember', 'submit'] -%}
+    <p>{{ field.label() }} 
+    {% if field.errors %}
+          {{ field(class="invalid") }}
+    <span class="invalid-feedback">
+          {% for e in field.errors %}
+          {{ e }}
+          {% endfor %}
+    </span>
+    {% else %}
+          {{ field() }}
+    {% endif %}
+{% endfor %}
+<p>{{ form.remember.label()}} {{ form.remember() }}
+<p>{{ form.submit() }}
+<hr align=left width="300px">
+<a href="{{url_for('register')}}">Регистрация</a>
+</form>
+{% endblock %}
